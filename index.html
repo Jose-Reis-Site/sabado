@@ -309,7 +309,7 @@
         grid.innerHTML = veiculosParaRenderizar.map((v) => {
             const numTabela = todosVeiculosLinha.indexOf(v) + 1;
             const viagens = dadosGlobais.filter(x => x.veiculo === v && x.linha === linha).sort((a,b) => paraMinutos(a.ini, a.trip) - paraMinutos(b.ini, b.trip));
-            return gerarCard(traduzirLinha(linha), `TABELA ${String(numTabela).padStart(2,'0')} | CARRO ${v}`, viagens, true);
+            return gerarCard(traduzirLinha(linha), `TABELA ${String(numTabela).padStart(2,'0')} | CARRO ${v} | SABADO`, viagens, true);
         }).join('');
     }
 
@@ -350,7 +350,7 @@
                 let tituloAtividade = codLinha ? traduzirLinha(codLinha) : nomeEvento;
                 if(tituloAtividade.includes("Intra-jornada")) tituloAtividade = "INTRA-JORNADA";
 
-                return gerarCard(`TRIPULANTE: ${t}`, tituloAtividade, g, false);
+                return gerarCard(`TRIPULANTE: ${t} | SABADO`, tituloAtividade, g, false);
             }).join('');
         });
         grid.innerHTML = htmlFinal;
