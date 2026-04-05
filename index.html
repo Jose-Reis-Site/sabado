@@ -67,14 +67,52 @@
         .btn-print { background: #2b6cb0; color: white; border: none; }
 
         @media print {
-            body { background: white !important; }
-            .header, .control-panel, .tab-bar, .btn-action, #sync-status { display: none !important; }
-            .app-container { padding: 0 !important; margin: 0 !important; }
-            .content-area { border: none !important; padding: 0 !important; overflow: visible !important; }
-            .tabela-grid { display: block !important; }
-            .card-tabela { box-shadow: none !important; border: 1px solid #000 !important; page-break-inside: avoid; margin-bottom: 15px; width: 50% !important; }
+            /* 1. Destrava a altura para a impressora ler todas as páginas */
+            html, body { 
+                height: auto !important; 
+                overflow: visible !important; 
+                background: white !important; 
+            }
+
+            .header, .control-panel, .tab-bar, .btn-action, #sync-status { 
+                display: none !important; 
+            }
+
+            /* 2. Remove restrições do container principal */
+            .app-container { 
+                display: block !important;
+                height: auto !important;
+                padding: 0 !important; 
+                margin: 0 !important; 
+                overflow: visible !important;
+            }
+
+            /* 3. Garante que a área de conteúdo mostre tudo */
+            .content-area { 
+                display: block !important;
+                height: auto !important;
+                border: none !important; 
+                padding: 0 !important; 
+                overflow: visible !important; 
+            }
+
+            .tabela-grid { 
+                display: block !important; 
+                height: auto !important;
+            }
+
+            /* 4. Configuração dos cards (50% da largura) */
+            .card-tabela { 
+                box-shadow: none !important; 
+                border: 1px solid #000 !important; 
+                page-break-inside: avoid; 
+                margin-bottom: 15px; 
+                width: 50% !important; 
+                float: left; /* Opcional: faz os cards ficarem lado a lado se couberem */
+            }
+
+            /* Cores para impressão */
             .card-header { background: #eee !important; color: #000 !important; border-bottom: 1px solid #000; }
-            .card-header .sub { color: #000 !important; background: none !important; }
             .mini-table th { background: #eee !important; color: #000 !important; }
             .intra-verde { background-color: #d4edda !important; -webkit-print-color-adjust: exact; }
             .td-garagem { background-color: #ffebeb !important; color: #c53030 !important; -webkit-print-color-adjust: exact; }
