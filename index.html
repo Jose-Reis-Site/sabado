@@ -137,7 +137,7 @@
 <div class="app-container">
     <div class="control-panel">
         <div class="filter-group">
-            <button class="btn-action" onclick="document.getElementById('fileTest').click()">📂 CSV</button>
+            <button class="btn-action" onclick="document.getElementById('fileTest').click()">📂 Importar</button>
             <input type="file" id="fileTest" accept=".csv" class="hidden" onchange="importarManual(this)">
             <button class="btn-action btn-print" onclick="window.print()">🖨️</button>
         </div>
@@ -361,7 +361,7 @@
     function renderizarTripulantes() {
         const busca = document.getElementById('search-trip').value.trim().toLowerCase();
         const grid = document.getElementById('grid-main');
-        if(!busca) { grid.innerHTML = "<p>Digite o tripulante...</p>"; return; }
+        if(!busca) { grid.innerHTML = "<p>Digite para buscar...</p>"; return; }
         
         const todosTrips = [...new Set(dadosGlobais.map(d => d.trip))];
         let encontrados = todosTrips.filter(t => {
@@ -392,14 +392,30 @@
             htmlFinal += grupos.map((g) => {
                 const codLinha = g[0].linha;
                 const nomeEvento = g[0].evento;
+                const veiculoAtual = g[0].veiculo;
+                
                 let tituloAtividade = codLinha ? traduzirLinha(codLinha) : nomeEvento;
                 if(tituloAtividade.includes("Intra-jornada")) tituloAtividade = "INTRA-JORNADA";
 
-                return gerarCard(`TRIPULANTE: ${t} | SABADO`, tituloAtividade, g, false);
+                let infoTabela = "";
+                if (codLinha && veiculoAtual) {
+                    // Calcula a ordem da tabela para este veículo nesta linha específica
+                    const ordenados = obterVeiculosOrdenados(codLinha);
+                    const idxTabela = ordenados.indexOf(veiculoAtual) + 1;
+                    if (idxTabela > 0) {
+                        infoTabela = ` | TABELA ${String(idxTabela).padStart(2, '0')}`;
+                    }
+                }
+
+                const carroTexto = veiculoAtual ? ` | CARRO ${veiculoAtual}` : "";
+                const subTexto = `${tituloAtividade}${infoTabela}${carroTexto}`;
+
+                return gerarCard(`TRIPULANTE: ${t} | DIAS ÚTEIS`, subTexto, g, false);
             }).join('');
         });
         grid.innerHTML = htmlFinal;
     }
+
 
     function gerarCard(titulo, sub, viagens, isTab) {
         const notasOrdenadas = [];
