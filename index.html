@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Operacional PRO - Mobile Plus</title>
+    <title>Sabados - Consulta de linhas e tripulantes</title>
     <style>
         :root {
             --primary: #1a3a5a;
@@ -67,7 +67,7 @@
         .btn-print { background: #2b6cb0; color: white; border: none; }
 
         @media print {
-            /* 1. Destrava a altura para a impressora ler todas as páginas */
+            /* 1. Destrava a altura e remove barras de rolagem para a impressora */
             html, body { 
                 height: auto !important; 
                 overflow: visible !important; 
@@ -78,7 +78,7 @@
                 display: none !important; 
             }
 
-            /* 2. Remove restrições do container principal */
+            /* 2. Ajusta o container para ocupar a folha toda */
             .app-container { 
                 display: block !important;
                 height: auto !important;
@@ -87,7 +87,6 @@
                 overflow: visible !important;
             }
 
-            /* 3. Garante que a área de conteúdo mostre tudo */
             .content-area { 
                 display: block !important;
                 height: auto !important;
@@ -96,24 +95,32 @@
                 overflow: visible !important; 
             }
 
+            /* 3. TRANSFORMA O GRID EM DUAS COLUNAS NA IMPRESSÃO */
             .tabela-grid { 
-                display: block !important; 
+                display: flex !important; 
+                flex-wrap: wrap !important; /* Faz os cards pularem para a próxima linha */
+                gap: 10px !important;
                 height: auto !important;
+                flex-direction: row !important;
             }
 
-            /* 4. Configuração dos cards (50% da largura) */
+            /* 4. CONFIGURAÇÃO DOS CARDS (48% para caber dois lado a lado com margem) */
             .card-tabela { 
                 box-shadow: none !important; 
                 border: 1px solid #000 !important; 
-                page-break-inside: avoid; 
-                margin-bottom: 15px; 
-                width: 50% !important; 
-                float: left; /* Opcional: faz os cards ficarem lado a lado se couberem */
+                page-break-inside: avoid; /* Impede que o card quebre no meio de duas folhas */
+                margin-bottom: 10px; 
+                width: 48% !important; /* Quase metade da página */
+                box-sizing: border-box;
             }
 
-            /* Cores para impressão */
+            /* Cores e ajustes visuais para economia de tinta */
             .card-header { background: #eee !important; color: #000 !important; border-bottom: 1px solid #000; }
-            .mini-table th { background: #eee !important; color: #000 !important; }
+            .card-header .sub { color: #000 !important; background: none !important; border: 1px solid #ccc; }
+            .mini-table th { background: #eee !important; color: #000 !important; border: 1px solid #000; }
+            .mini-table td { border: 1px solid #000; }
+            
+            /* Preserva as cores de destaque */
             .intra-verde { background-color: #d4edda !important; -webkit-print-color-adjust: exact; }
             .td-garagem { background-color: #ffebeb !important; color: #c53030 !important; -webkit-print-color-adjust: exact; }
             .td-ter { background-color: #e1effe !important; color: #1e429f !important; -webkit-print-color-adjust: exact; }
